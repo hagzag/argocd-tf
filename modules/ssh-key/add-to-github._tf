@@ -1,0 +1,31 @@
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# Configure the GitHub Provider
+provider "github" {
+  token        = "${var.github_token}"
+ # organization = "${var.github_organization}"
+
+}
+
+resource "github_user_ssh_key" "ops" {
+  title = "import ssh key form ${var.environment} - via terraform"
+ key   = tls_private_key.key.public_key_openssh
+ #username = data.github_user.ops.username
+}
+
+data "github_user" "ops" {
+  username = "ops"
+}
+
+variable "github_token" {
+
+}
+
+
